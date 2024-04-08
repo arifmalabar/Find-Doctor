@@ -50,6 +50,13 @@ class TambahDokter : AppCompatActivity() {
             txtAlamat.setError("Alamat Harus Diisi")
         } else {
             //post
+            if(pria){
+                jk = "pria"
+            } else if(wanita) {
+                jk = "wanita"
+            }else {
+                jk = "unknown"
+            }
             var api : DokterAPI = Koneksi.getKoneksi()!!.create(DokterAPI::class.java)
             var data : Call<Dokter> = api.insertData(nama, jk, alamat)
             data.enqueue(object: Callback<Dokter>{

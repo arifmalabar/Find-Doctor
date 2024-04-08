@@ -15,14 +15,20 @@ interface DokterAPI {
     ) : Call<Dokter>
 
     @Multipart
-    @PUT("finddoctor/dokter")
+    @PUT("finddoctor/dokter/{id}")
     fun updateData(
-        @Field("id") id : String,
-        @Field("nama_dokter") nama : String,
-        @Field("jenis_kelamin") jk : String,
-        @Field("alamat") alamat : String
+        @Path("id") id : String,
+        @Part("nama_dokter") nama : String,
+        @Part("jenis_kelamin") jk : String,
+        @Part("alamat") alamat : String
     ) : Call<Dokter>
 
     @GET("finddoctor/dokter")
     fun getData() : Call<ArrayList<Dokter>>
+
+    @GET("finddoctor/dokter/{id}")
+    fun getDataById(@Path("id") id : String) : Call<Dokter>
+
+    @DELETE("finddoctor/dokter/{id}")
+    fun deleteData(@Path("id") id : String) : Call<Dokter>
 }

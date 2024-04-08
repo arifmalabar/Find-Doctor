@@ -96,4 +96,11 @@
         android:layout_marginTop="10dp"
         android:backgroundTint="#FB8C00"
         android:text="Ubah Dokter" />
+
+    <Button
+        android:id="@+id/buttonHapus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#D81B60"
+        android:text="Hapus" />
 </LinearLayout>

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         //txtData = findViewById(R.id.testData)
         rv_data = findViewById(R.id.rvData)
         floatBtn = findViewById(R.id.floatingActionButton)
+        pb = findViewById(R.id.progressBar)
         //event
         getDataFromRetrofit()
         floatBtn.setOnClickListener({
@@ -47,26 +49,19 @@ class MainActivity : AppCompatActivity() {
         var api : DokterAPI = Koneksi.getKoneksi()!!.create(DokterAPI::class.java)
         var data : Call<ArrayList<Dokter>> = api.getData()
         var nama : String = ""
+        pb.visibility = View.VISIBLE
         data.enqueue(object: Callback<ArrayList<Dokter>>{
 
             override fun onResponse(p0: Call<ArrayList<Dokter>>, p1: Response<ArrayList<Dokter>>) {
-                with(p1){
-                    when(code()){
-                        200 -> {
-                            //txtData.setText(body()!!.get(0).dokter.get(0).get("nama_dokter"))
-                            //Log.d("Tes Data", body()!!.get(0).nama_dokter)
-                            /*body()!!.forEach {
-                                nama = nama + it.nama_dokter + " \n"
-                            }
-                            txtData.setText(nama)*/
-                            var adapter = DokterAdapter(body()!!, applicationContext)
-                            var lm = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
-                            rv_data.layoutManager = lm
-                            rv_data.adapter = adapter
+                when(p1.code()){
+                    200 -> {
+                        adapter = DokterAdapter(p1.body()!!, applicationContext)
+                        lm = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
+                        rv_data.adapter = adapter
+                        rv_data.layoutManager = lm
+                        pb.visibility = View.GONE
+                    } else -> {
 
-                        } else -> {
-
-                        }
                     }
                 }
             }
@@ -88,4 +83,5 @@ class MainActivity : AppCompatActivity() {
     private lateinit var txtData : TextView
     private lateinit var floatBtn : FloatingActionButton
     private lateinit var rv_data : RecyclerView
+    private lateinit var pb : ProgressBar
 }
