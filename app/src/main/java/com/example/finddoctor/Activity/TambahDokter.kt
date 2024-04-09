@@ -65,7 +65,6 @@ class TambahDokter : AppCompatActivity() {
                         if(isSuccessful){
                             Toast.makeText(applicationContext, message(), Toast.LENGTH_LONG).show()
                             clearForm()
-                            finish()
                         } else if(code() != 200){
                             Toast.makeText(applicationContext, message(), Toast.LENGTH_LONG).show()
                         }
@@ -77,6 +76,7 @@ class TambahDokter : AppCompatActivity() {
                 }
 
             })
+            finish()
         }
     }
 

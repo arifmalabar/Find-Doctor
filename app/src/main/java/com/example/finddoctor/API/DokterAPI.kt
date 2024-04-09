@@ -14,13 +14,13 @@ interface DokterAPI {
         @Field("alamat") alamat : String
     ) : Call<Dokter>
 
-    @Multipart
+    @FormUrlEncoded
     @PUT("finddoctor/dokter/{id}")
     fun updateData(
         @Path("id") id : String,
-        @Part("nama_dokter") nama : String,
-        @Part("jenis_kelamin") jk : String,
-        @Part("alamat") alamat : String
+        @Field("nama_dokter") nama : String,
+        @Field("jenis_kelamin") jk : String,
+        @Field("alamat") alamat : String
     ) : Call<Dokter>
 
     @GET("finddoctor/dokter")

@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.example.finddoctor.API.DokterAPI
 import com.example.finddoctor.Config.Koneksi
 import com.example.finddoctor.Model.Dokter
@@ -73,27 +74,36 @@ class UpdateDokter : AppCompatActivity() {
     }
 
     private fun buttonhapusClickListener(it: View?) {
-        var dokterAPI : DokterAPI = Koneksi.getKoneksi().create(DokterAPI::class.java)
-        var data : Call<Dokter> = dokterAPI.deleteData(id)
-        data.enqueue(object: Callback<Dokter>{
-            override fun onResponse(p0: Call<Dokter>, p1: Response<Dokter>) {
-                Toast.makeText(applicationContext, "Berhasil menghapus data", Toast.LENGTH_SHORT).show()
-                finish()
+        /**/
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder
+            .setMessage("Apakah anda ingin mengahpus data?")
+            .setPositiveButton("Hapus Data") {dialog, idM ->
+                var dokterAPI : DokterAPI = Koneksi.getKoneksi().create(DokterAPI::class.java)
+                var data : Call<Dokter> = dokterAPI.deleteData(id)
+                data.enqueue(object: Callback<Dokter>{
+                    override fun onResponse(p0: Call<Dokter>, p1: Response<Dokter>) {
+                        Toast.makeText(applicationContext, "Berhasil menghapus data", Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+
+                    override fun onFailure(p0: Call<Dokter>, p1: Throwable) {
+
+                    }
+
+                })
             }
-
-            override fun onFailure(p0: Call<Dokter>, p1: Throwable) {
-
+            .setNegativeButton("Batal") {dialog, id ->
+                Toast.makeText(this, "Hapus data", Toast.LENGTH_SHORT).show()
             }
-
-        })
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 
     private fun buttonProsessOnClickListener(it: View?) {
         var nama : String = txtNama.text.toString()
         var alamat : String =  txtAlamat.text.toString()
         var jk : String = ""
-        Log.d("Nama", id)
-
         if(radioPria.isChecked){
             jk = "pria"
         } else if(radioPria.isChecked){
@@ -107,7 +117,7 @@ class UpdateDokter : AppCompatActivity() {
             txtAlamat.setError("alamat anda masih kosong")
         } else {
             var dokterApi : DokterAPI = Koneksi.getKoneksi()!!.create(DokterAPI::class.java)
-            var data : Call<Dokter> = dokterApi.updateData(id, "roa", jk, alamat)
+            var data : Call<Dokter> = dokterApi.updateData(id, nama, jk, alamat)
             data.enqueue(object : Callback<Dokter>{
                 override fun onResponse(p0: Call<Dokter>, p1: Response<Dokter>) {
                     when(p1.code()){
